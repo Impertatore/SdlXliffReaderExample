@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SdlXliffReaderExample.Core.SDLXLIFF
 {
-    //create something like this type of class to encapsulate everything from the processor 
-    //Note: try not to leave simple variables lying around in your code; it is clearer and easier to maintain when everything is structured
-    //Patrick Hartnett 18/01/2012
+    /// <summary>
+    /// Simple class to manage the segmentPair content
+    /// </summary>
     public  class SegmentExampleClass
     {
         
