@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
-using Sdl.FileTypeSupport.Framework.Integration;
-using Sdl.FileTypeSupport.Framework.Bilingual;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.BilingualApi;
 using System.IO;
+using Sdl.FileTypeSupport.Framework.Core.Utilities.IntegrationApi;
 
 namespace SdlXliffReaderExample.Core.SDLXLIFF
 {
@@ -18,17 +17,17 @@ namespace SdlXliffReaderExample.Core.SDLXLIFF
         internal event ChangedEventHandler Progress;
 
 
-        private PocoFilterManager fm;
-        internal Parser()
+        private readonly IFileTypeManager _fileTypeManager;
+        internal Parser(IFileTypeManager fileTypeManager)
         {
-            fm = new PocoFilterManager(true);   
+            _fileTypeManager = fileTypeManager;
         }
 
 
         internal List<SegmentExampleClass> openReadSdlXliffExample(string filePath)
         {
-            
-            IMultiFileConverter converter = fm.GetConverterToDefaultBilingual(filePath, filePath+"_.sdlxliff", null);
+
+            IMultiFileConverter converter = _fileTypeManager.GetConverterToDefaultBilingual(filePath, filePath + "_.sdlxliff", null);
 
             SDLXLIFF.ContentProcessor contentProcessor = new SDLXLIFF.ContentProcessor();
             contentProcessor.SegmentListExample = new List<SegmentExampleClass>();
