@@ -2,12 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sdl.FileTypeSupport.Framework.Core.Utilities.IntegrationApi;
+using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using SdlXliffReaderExample.Core.SDLXLIFF;
 
 namespace SdlXliffReaderExample.Core
 {
     public class Processor
     {
+        private readonly IFileTypeManager _fileTypeManager;
+        public Processor():this(DefaultFileTypeManager.CreateInstance(true))
+        {
+            
+        }
+
+        public Processor(IFileTypeManager fileTypeManager)
+        {
+            _fileTypeManager = fileTypeManager;
+        }
 
         public delegate void ChangedEventHandler(int Maximum, int Current, int Percent, string Message);
         public event ChangedEventHandler Progress;
@@ -19,7 +31,7 @@ namespace SdlXliffReaderExample.Core
         {
             try
             {
-                Parser SdlXliffParser = new Parser();
+                Parser SdlXliffParser = new Parser(_fileTypeManager);
                 try
                 {
                     //do stuff here (settings etc...)
