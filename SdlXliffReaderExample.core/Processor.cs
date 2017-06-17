@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
-using SdlXliffReaderExample.Core.SDLXLIFF;
+using SdlXliffReader.Core.EventArgs;
+using SdlXliffReader.Core.SDLXLIFF;
 
-namespace SdlXliffReaderExample.Core
+namespace SdlXliffReader.Core
 {
     public class Processor
     {
         private readonly IFileTypeManager _fileTypeManager;
-        public Processor():this(DefaultFileTypeManager.CreateInstance(true))
+
+        public event EventHandler<ProgressEventArgs> ProgressEvent;
+
+        public Processor() : this(DefaultFileTypeManager.CreateInstance(true))
         {
-            
+
         }
 
         public Processor(IFileTypeManager fileTypeManager)
@@ -21,51 +23,25 @@ namespace SdlXliffReaderExample.Core
             _fileTypeManager = fileTypeManager;
         }
 
-        public delegate void ChangedEventHandler(int Maximum, int Current, int Percent, string Message);
-        public event ChangedEventHandler Progress;
-
-        #region  |  read SDLXLIFF file  |
-
-
-        public List<SegmentExampleClass> readSdlXliffFile(string sdlXliffFilePath)
+        public List<SegmentInfo> ReadFile(string filePath, ProcessorOptions options)
         {
+            var parser = new Parser(_fileTypeManager);
+
             try
             {
-                Parser SdlXliffParser = new Parser(_fileTypeManager);
-                try
-                {
-                    //do stuff here (settings etc...)
-                    return SdlXliffParser.openReadSdlXliffExample(sdlXliffFilePath);                    
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    SdlXliffParser.Progress -= new Parser.ChangedEventHandler(parser_Progress);
-                }
+                parser.ProgressEvent += ParserProgressEvent;
+
+                return parser.ReadFile(filePath, options);
             }
-            catch (Exception ex)
+            finally
             {
-                throw ex;
+                parser.ProgressEvent -= ParserProgressEvent;
             }
-
         }
 
-
-
-        #endregion
-
-        #region  |  progress callbacks  |
-
-  
-        private void parser_Progress(int Maximum, int Current, int Percent, string Message)
+        private void ParserProgressEvent(object sender, ProgressEventArgs e)
         {
-            if (Progress != null)
-                Progress(Maximum, Current, Percent, Message);
+            ProgressEvent?.Invoke(this, e);
         }
-
-        #endregion
     }
 }

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SdlXliffReader")]
-[assembly: AssemblyDescription("SdlXliffReader example by Patrick Hartnett")]
+[assembly: AssemblyTitle("SdlXliffReader.Test")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Patrick Hartnett")]
-[assembly: AssemblyProduct("SdlXliffReaderExample")]
-[assembly: AssemblyCopyright("Copyright © Patrick Hartnett 2017")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("SdlXliffReader.Test")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("79b1515d-c091-4990-a2d3-afa20e0eb549")]
+[assembly: Guid("d71efed6-586a-44c5-9218-d317396e6c62")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]

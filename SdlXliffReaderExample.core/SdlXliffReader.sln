@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdlXliffReaderExample.core", "SdlXliffReaderExample.core.csproj", "{253C5F8F-029F-46BF-AC7D-40E55896470A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdlXliffReader.core", "SdlXliffReader.core.csproj", "{253C5F8F-029F-46BF-AC7D-40E55896470A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdlXliffReader.Test", "..\SdlXliffReader.Console\SdlXliffReader.Test.csproj", "{D71EFED6-586A-44C5-9218-D317396E6C62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{253C5F8F-029F-46BF-AC7D-40E55896470A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{253C5F8F-029F-46BF-AC7D-40E55896470A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{253C5F8F-029F-46BF-AC7D-40E55896470A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D71EFED6-586A-44C5-9218-D317396E6C62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D71EFED6-586A-44C5-9218-D317396E6C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D71EFED6-586A-44C5-9218-D317396E6C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D71EFED6-586A-44C5-9218-D317396E6C62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

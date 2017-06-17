@@ -1,65 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.BilingualApi;
-using System.IO;
-using Sdl.FileTypeSupport.Framework.Core.Utilities.IntegrationApi;
+using Sdl.FileTypeSupport.Framework.IntegrationApi;
+using SdlXliffReader.Core.EventArgs;
 
-namespace SdlXliffReaderExample.Core.SDLXLIFF
+namespace SdlXliffReader.Core.SDLXLIFF
 {
     internal class Parser
     {
-
-        internal delegate void ChangedEventHandler(int Maximum, int Current, int Percent, string Message);
-        internal event ChangedEventHandler Progress;
-
-
         private readonly IFileTypeManager _fileTypeManager;
+
+        internal event EventHandler<ProgressEventArgs> ProgressEvent;
+       
         internal Parser(IFileTypeManager fileTypeManager)
         {
             _fileTypeManager = fileTypeManager;
         }
 
-
-        internal List<SegmentExampleClass> openReadSdlXliffExample(string filePath)
+        internal List<SegmentInfo> ReadFile(string filePath, ProcessorOptions options)
         {
+            var converter = _fileTypeManager.GetConverterToDefaultBilingual(filePath, filePath + ".out", null);
 
-            IMultiFileConverter converter = _fileTypeManager.GetConverterToDefaultBilingual(filePath, filePath + "_.sdlxliff", null);
+            var contentProcessor = new ParagraphProcessor
+            {
+                Segments = new List<SegmentInfo>()
+            };
 
-            SDLXLIFF.ContentProcessor contentProcessor = new SDLXLIFF.ContentProcessor();
-            contentProcessor.SegmentListExample = new List<SegmentExampleClass>();
+            if (options.SourceToTargetCopier.CopySourceToTaret)
+            {
+                converter.AddBilingualProcessor(new SourceToTargetCopier(
+                    options.SourceToTargetCopier.Preserve 
+                        ? ExistingContentHandling.Preserve 
+                        : ExistingContentHandling.Replace));
+            }
 
-            //converter.AddBilingualProcessor(new SourceToTargetCopier(ExistingContentHandling.Preserve));
             converter.AddBilingualProcessor(contentProcessor);
+
             try
             {
-                converter.Progress += new EventHandler<BatchProgressEventArgs>(converter_Progress);
-                
-                
+                converter.Progress += ConverterProgress;
+
                 converter.Parse();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             finally
             {
-                converter.Progress -= new EventHandler<BatchProgressEventArgs>(converter_Progress);
+                converter.Progress -= ConverterProgress;
             }
 
-            return contentProcessor.SegmentListExample;
+            return contentProcessor.Segments;
         }
 
-
-        private void converter_Progress(object sender, BatchProgressEventArgs e)
+        private void ConverterProgress(object sender, BatchProgressEventArgs e)
         {
-            if (Progress != null)
+            ProgressEvent?.Invoke(this, new ProgressEventArgs
             {
-                Progress(100, e.FilePercentComplete, e.FilePercentComplete, Path.GetFileName(e.FilePath));
-            }
+                Maximum = e.TotalFiles,
+                Current = e.FileNumber,
+                Percent = e.FilePercentComplete,
+                Message = e.FilePath
+            });
         }
     }
 }
