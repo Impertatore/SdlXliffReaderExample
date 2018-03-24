@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.LanguagePlatform.Core;
 using Sdl.LanguagePlatform.Core.Tokenization;
 using Sdl.LanguagePlatform.TranslationMemory;
 using Sdl.LanguagePlatform.TranslationMemoryApi;
-using SdlXliffReader.Core.SDLXLIFF;
+using SdlXliffReader.Core.Reader;
 
 namespace SdlXliffReader.Core.Tokenization
 {
@@ -33,9 +29,9 @@ namespace SdlXliffReader.Core.Tokenization
         public Segment SourceSegment { get; set; }
         public Segment TargetSegment { get; set; }
 
-        public SearchResults SearchTranslationMemory(ISegmentPair segmentPair)
-        {        
-            return SearchTranslationMemory(SegmentVisitor(segmentPair.Source, MyTemporaryTm.LanguageDirection.SourceLanguage).Segment,
+        public SearchResults TokenizeSegment(ISegmentPair segmentPair)
+        {
+            return TokenizeSegment(SegmentVisitor(segmentPair.Source, MyTemporaryTm.LanguageDirection.SourceLanguage).Segment,
                 SegmentVisitor(segmentPair.Target, MyTemporaryTm.LanguageDirection.TargetLanguage).Segment);
         }
 
@@ -50,10 +46,17 @@ namespace SdlXliffReader.Core.Tokenization
             return visitor;
         }
 
-        public SearchResults SearchTranslationMemory(Segment sourceSegment, Segment targetSegment)
+        public SearchResults TokenizeSegment(Segment sourceSegment, Segment targetSegment)
         {
-            if (sourceSegment.Elements.Count == 0 || targetSegment.Elements.Count == 0)
+            if (sourceSegment.Elements.Count == 0)
+            {
                 return null;
+            }
+
+            if (targetSegment.Elements.Count == 0)
+            {
+                targetSegment.Elements.AddRange(sourceSegment.Elements);
+            }
 
             var tuImport = AddTranslationUnit(sourceSegment, targetSegment);
 
@@ -126,7 +129,7 @@ namespace SdlXliffReader.Core.Tokenization
                     File.Delete(MyTemporaryTm.FilePath);
             }
             catch (Exception e)
-            {            
+            {
                 // don't throw an error here...              
                 Console.WriteLine(e);
             }

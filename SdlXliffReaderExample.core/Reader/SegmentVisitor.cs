@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.FileTypeSupport.Framework.NativeApi;
 using Sdl.LanguagePlatform.Core;
 
-namespace SdlXliffReader.Core.SDLXLIFF
+namespace SdlXliffReader.Core.Reader
 {
     internal class SegmentVisitor : IMarkupDataVisitor
     {

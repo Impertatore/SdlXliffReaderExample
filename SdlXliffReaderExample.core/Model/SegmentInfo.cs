@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Sdl.FileTypeSupport.Framework.BilingualApi;
+﻿using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.LanguagePlatform.Core;
 
-namespace SdlXliffReader.Core.SDLXLIFF
+namespace SdlXliffReader.Core.Model
 {
     /// <summary>
     /// Simple class to manage the segmentPair content
@@ -18,5 +17,7 @@ namespace SdlXliffReader.Core.SDLXLIFF
         public Segment SourceSegment { get; set; }
 
         public Segment TargetSegment { get; set; }
+
+        public WordCounts SourceWordCounts { get; set; }
     }
 }

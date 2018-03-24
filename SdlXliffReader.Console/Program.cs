@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Sdl.LanguagePlatform.Core.Tokenization;
 using SdlXliffReader.Core;
-using SdlXliffReader.Core.SDLXLIFF;
 
 namespace SdlXliffReader.Test
 {
@@ -15,7 +14,7 @@ namespace SdlXliffReader.Test
             // provide the file path of the sdlxliff file
             args = new[]
             {
-                @"C:\Users\Patrick\Documents\Studio 2017\Projects\Project 1\de-DE\SecondSample.docx.sdlxliff"
+                @"C:\Users\Patri\Documents\Studio 2017\Projects\SampleProject\de-DE\SecondSample.docx.sdlxliff"
             };
 
             ReadFile(args[0]);
@@ -59,6 +58,13 @@ namespace SdlXliffReader.Test
                     Console.WriteLine("Target Segment");
                     Console.WriteLine("Text: {0}", segmentInfo.TargetSegment.ToPlain());
                     WriteTokens(segmentInfo.TargetSegment.Tokens);
+
+                    Console.WriteLine();
+                    Console.WriteLine("Statistics");
+                    Console.WriteLine(" - Words: {0}", segmentInfo.SourceWordCounts.Words);
+                    Console.WriteLine(" - Characters: {0}", segmentInfo.SourceWordCounts.Characters);
+                    Console.WriteLine(" - Placeables: {0}", segmentInfo.SourceWordCounts.Placeables);
+                    Console.WriteLine(" - Tags: {0}", segmentInfo.SourceWordCounts.Tags);
 
                     Console.WriteLine();
                     Console.WriteLine("-".PadRight(40, '-'));
