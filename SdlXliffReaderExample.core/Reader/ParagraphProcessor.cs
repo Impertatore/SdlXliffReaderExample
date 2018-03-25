@@ -65,9 +65,9 @@ namespace SdlXliffReader.Core.Reader
         {
             foreach (var segmentPair in paragraphUnit.SegmentPairs)
             {
-                var results = Tokenizer.TokenizeSegment(segmentPair);
+                var result = Tokenizer.TokenizeSegment(segmentPair);
 
-                if (results == null)
+                if (result == null)
                 {
                     continue;
                 }
@@ -77,15 +77,7 @@ namespace SdlXliffReader.Core.Reader
                     ParagraphId = paragraphUnit.Properties.ParagraphUnitId.Id,
                     SegmentId = segmentPair.Properties.Id.Id,
                     SegmentPair = segmentPair,
-                    SourceSegment = _tokenizer.SourceSegment,
-                    TargetSegment = _tokenizer.TargetSegment,
-                    SourceWordCounts = new WordCounts
-                    {
-                        Words = results.SourceWordCounts.Words,
-                        Characters = results.SourceWordCounts.Characters,
-                        Tags = results.SourceWordCounts.Tags,
-                        Placeables = results.SourceWordCounts.Placeables
-                    }
+                    TokenizedSegment = result
                 });
             }
         }

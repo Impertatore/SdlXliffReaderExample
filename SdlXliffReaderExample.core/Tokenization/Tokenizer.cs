@@ -1,11 +1,11 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
 using Sdl.LanguagePlatform.Core;
 using Sdl.LanguagePlatform.Core.Tokenization;
 using Sdl.LanguagePlatform.TranslationMemory;
 using Sdl.LanguagePlatform.TranslationMemoryApi;
+using SdlXliffReader.Core.Model;
 using SdlXliffReader.Core.Reader;
 
 namespace SdlXliffReader.Core.Tokenization
@@ -24,29 +24,15 @@ namespace SdlXliffReader.Core.Tokenization
             _environmentPaths = new EnvironmentPaths(EnvironmentConstants.ProductName);
             SourceCultureInfo = sourceCultureInfo;
             TargetCultureInfo = targetCultureInfo;
-        }
+        }   
 
-        public Segment SourceSegment { get; set; }
-        public Segment TargetSegment { get; set; }
-
-        public SearchResults TokenizeSegment(ISegmentPair segmentPair)
+        public TokenizedSegment TokenizeSegment(ISegmentPair segmentPair)
         {
             return TokenizeSegment(SegmentVisitor(segmentPair.Source, MyTemporaryTm.LanguageDirection.SourceLanguage).Segment,
                 SegmentVisitor(segmentPair.Target, MyTemporaryTm.LanguageDirection.TargetLanguage).Segment);
-        }
+        }       
 
-        private static SegmentVisitor SegmentVisitor(ISegment seg, CultureInfo culture)
-        {
-            var segment = new Segment(culture);
-
-            var visitor = new SegmentVisitor(segment, false);
-
-            visitor.VisitSegment(seg);
-
-            return visitor;
-        }
-
-        public SearchResults TokenizeSegment(Segment sourceSegment, Segment targetSegment)
+        public TokenizedSegment TokenizeSegment(Segment sourceSegment, Segment targetSegment)
         {
             if (sourceSegment.Elements.Count == 0)
             {
@@ -64,25 +50,7 @@ namespace SdlXliffReader.Core.Tokenization
 
             MyTemporaryTm?.LanguageDirection.DeleteTranslationUnit(tuImport.TuId);
 
-            AsignSearchResult(searchResults);
-
-            return searchResults;
-        }
-
-        private void AsignSearchResult(SearchResults searchResults)
-        {
-            var searchResult = searchResults?.Results?[0];
-
-            if (searchResult != null)
-            {
-                SourceSegment = searchResult.MemoryTranslationUnit.SourceSegment;
-                TargetSegment = searchResult.MemoryTranslationUnit.TargetSegment;
-            }
-            else
-            {
-                SourceSegment = null;
-                TargetSegment = null;
-            }
+            return GeTokenizedSegmentResult(searchResults);
         }
 
         public bool CreateTranslationMemory()
@@ -111,6 +79,52 @@ namespace SdlXliffReader.Core.Tokenization
             return true;
         }
 
+        public void DeleteTranslationMemory()
+        {
+            try
+            {
+                if (File.Exists(MyTemporaryTm.FilePath))
+                    File.Delete(MyTemporaryTm.FilePath);
+            }
+            catch 
+            {
+                // catch all
+            }
+        }
+
+        private static SegmentVisitor SegmentVisitor(ISegment seg, CultureInfo culture)
+        {
+            var segment = new Segment(culture);
+
+            var visitor = new SegmentVisitor(segment, false);
+
+            visitor.VisitSegment(seg);
+
+            return visitor;
+        }
+
+        private TokenizedSegment GeTokenizedSegmentResult(SearchResults searchResults)
+        {
+            var result = new TokenizedSegment();
+
+            var searchResult = searchResults?.Results?[0];
+
+            if (searchResult != null)
+            {
+                result.SourceSegment = searchResult.MemoryTranslationUnit.SourceSegment;
+                result.TargetSegment = searchResult.MemoryTranslationUnit.TargetSegment;
+                result.SourceWordCounts = new Model.WordCounts
+                {
+                    Words = searchResults.SourceWordCounts.Words,
+                    Characters = searchResults.SourceWordCounts.Characters,
+                    Tags = searchResults.SourceWordCounts.Tags,
+                    Placeables = searchResults.SourceWordCounts.Placeables
+                };
+            }
+
+            return result;
+        }
+
         private ImportResult AddTranslationUnit(Segment sourceSegment, Segment targetSegment)
         {
             var unit = new TranslationUnit(sourceSegment, targetSegment);
@@ -119,21 +133,6 @@ namespace SdlXliffReader.Core.Tokenization
                 unit, GetImportSettings());
 
             return tuResult;
-        }
-
-        public void DeleteTranslationMemory()
-        {
-            try
-            {
-                if (File.Exists(MyTemporaryTm.FilePath))
-                    File.Delete(MyTemporaryTm.FilePath);
-            }
-            catch (Exception e)
-            {
-                // don't throw an error here...              
-                Console.WriteLine(e);
-            }
-
         }
 
         private static SearchSettings GetSearchSettings()
