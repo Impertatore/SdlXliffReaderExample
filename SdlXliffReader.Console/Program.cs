@@ -51,20 +51,20 @@ namespace SdlXliffReader.Test
 
                     Console.WriteLine();
                     Console.WriteLine("Source Segment");
-                    Console.WriteLine("Text: {0}", segmentInfo.SourceSegment.ToPlain());
-                    WriteTokens(segmentInfo.SourceSegment.Tokens);
+                    Console.WriteLine("Text: {0}", segmentInfo.TokenizedSegment.SourceSegment.ToPlain());
+                    WriteTokens(segmentInfo.TokenizedSegment.SourceSegment.Tokens);
 
                     Console.WriteLine();
                     Console.WriteLine("Target Segment");
-                    Console.WriteLine("Text: {0}", segmentInfo.TargetSegment.ToPlain());
-                    WriteTokens(segmentInfo.TargetSegment.Tokens);
+                    Console.WriteLine("Text: {0}", segmentInfo.TokenizedSegment.TargetSegment.ToPlain());
+                    WriteTokens(segmentInfo.TokenizedSegment.TargetSegment.Tokens);
 
                     Console.WriteLine();
                     Console.WriteLine("Statistics");
-                    Console.WriteLine(" - Words: {0}", segmentInfo.SourceWordCounts.Words);
-                    Console.WriteLine(" - Characters: {0}", segmentInfo.SourceWordCounts.Characters);
-                    Console.WriteLine(" - Placeables: {0}", segmentInfo.SourceWordCounts.Placeables);
-                    Console.WriteLine(" - Tags: {0}", segmentInfo.SourceWordCounts.Tags);
+                    Console.WriteLine(" - Words: {0}", segmentInfo.TokenizedSegment.SourceWordCounts.Words);
+                    Console.WriteLine(" - Characters: {0}", segmentInfo.TokenizedSegment.SourceWordCounts.Characters);
+                    Console.WriteLine(" - Placeables: {0}", segmentInfo.TokenizedSegment.SourceWordCounts.Placeables);
+                    Console.WriteLine(" - Tags: {0}", segmentInfo.TokenizedSegment.SourceWordCounts.Tags);
 
                     Console.WriteLine();
                     Console.WriteLine("-".PadRight(40, '-'));

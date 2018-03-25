@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="EnvironmentConstants.cs" />
     <Compile Include="EnvironmentPaths.cs" />
+    <Compile Include="Model\TokenizedSegment.cs" />
     <Compile Include="Model\WordCounts.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="ProcessorOptions.cs" />

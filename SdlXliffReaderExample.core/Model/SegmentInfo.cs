@@ -14,10 +14,6 @@ namespace SdlXliffReader.Core.Model
 
         public ISegmentPair SegmentPair { get; set; }
 
-        public Segment SourceSegment { get; set; }
-
-        public Segment TargetSegment { get; set; }
-
-        public WordCounts SourceWordCounts { get; set; }
+        public TokenizedSegment TokenizedSegment { get; set; }        
     }
 }
