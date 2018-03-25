@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.BilingualApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using SdlXliffReader.Core.EventArgs;
+using SdlXliffReader.Core.Model;
 
-namespace SdlXliffReader.Core.SDLXLIFF
+namespace SdlXliffReader.Core.Reader
 {
     internal class Parser
     {

@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Sdl.FileTypeSupport.Framework.BilingualApi;
+using SdlXliffReader.Core.Model;
 using SdlXliffReader.Core.Tokenization;
 
-namespace SdlXliffReader.Core.SDLXLIFF
+namespace SdlXliffReader.Core.Reader
 {
     public class ParagraphProcessor : IBilingualContentProcessor
     {
@@ -21,7 +22,8 @@ namespace SdlXliffReader.Core.SDLXLIFF
 
                 if (SourceLanguage == null || TargetLanguage == null)
                 {
-                    throw new Exception(string.Format("Unable to parse the file; {0} langauge cannot be null!", SourceLanguage == null ? "Source" : "Target"));
+                    throw new Exception(
+                        $"Unable to parse the file; {(SourceLanguage == null ? "Source" : "Target")} langauge cannot be null!");
                 }
 
                 _tokenizer = new Tokenizer(SourceLanguage, TargetLanguage);
@@ -63,7 +65,12 @@ namespace SdlXliffReader.Core.SDLXLIFF
         {
             foreach (var segmentPair in paragraphUnit.SegmentPairs)
             {
-                Tokenizer.SearchTranslationMemory(segmentPair);
+                var results = Tokenizer.TokenizeSegment(segmentPair);
+
+                if (results == null)
+                {
+                    continue;
+                }
 
                 Segments.Add(new SegmentInfo
                 {
@@ -71,7 +78,14 @@ namespace SdlXliffReader.Core.SDLXLIFF
                     SegmentId = segmentPair.Properties.Id.Id,
                     SegmentPair = segmentPair,
                     SourceSegment = _tokenizer.SourceSegment,
-                    TargetSegment = _tokenizer.TargetSegment
+                    TargetSegment = _tokenizer.TargetSegment,
+                    SourceWordCounts = new WordCounts
+                    {
+                        Words = results.SourceWordCounts.Words,
+                        Characters = results.SourceWordCounts.Characters,
+                        Tags = results.SourceWordCounts.Tags,
+                        Placeables = results.SourceWordCounts.Placeables
+                    }
                 });
             }
         }

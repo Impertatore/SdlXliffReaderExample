@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Sdl.FileTypeSupport.Framework.Core.Utilities.IntegrationApi;
 using Sdl.FileTypeSupport.Framework.IntegrationApi;
 using SdlXliffReader.Core.EventArgs;
-using SdlXliffReader.Core.SDLXLIFF;
+using SdlXliffReader.Core.Model;
+using SdlXliffReader.Core.Reader;
 
 namespace SdlXliffReader.Core
 {
