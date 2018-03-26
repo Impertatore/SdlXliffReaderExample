@@ -43,6 +43,5 @@ namespace SdlXliffReader.Core
                 return _myTmPath;
             }
         }
-
     }
 }

@@ -26,8 +26,7 @@ namespace SdlXliffReader.Core.Reader
                         $"Unable to parse the file; {(SourceLanguage == null ? "Source" : "Target")} langauge cannot be null!");
                 }
 
-                _tokenizer = new Tokenizer(SourceLanguage, TargetLanguage);
-                _tokenizer.CreateTranslationMemory();
+                _tokenizer = new Tokenizer(SourceLanguage, TargetLanguage, new EnvironmentPaths(EnvironmentConstants.ProductName));                
 
                 return _tokenizer;
             }
